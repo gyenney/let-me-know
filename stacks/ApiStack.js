@@ -20,6 +20,8 @@ export function ApiStack({ stack, app }) {
         routes: {
             // Route used to write a message to a notepad.
             "POST /notepads/{id}": "functions/create.main",
+            // List all messages within a given notepad.
+            "GET /notepads/{id}": "functions/list.main",
         }
     });
 
