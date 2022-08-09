@@ -7,7 +7,7 @@ export function StorageStack({ stack, app }) {
             notepadId,
             msgTimestamp,
         },
-        primaryIndex: { partitionKey: "notepadId", sortKey: "msgTimestampt" },
+        primaryIndex: { partitionKey: "notepadId", sortKey: "msgTimestamp" },
     });
 
 
