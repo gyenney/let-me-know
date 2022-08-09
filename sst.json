@@ -1,5 +1,5 @@
 {
   "name": "let-me-know",
-  "region": "us-east-1",
+  "region": "us-west-1",
   "main": "stacks/index.js"
 }
