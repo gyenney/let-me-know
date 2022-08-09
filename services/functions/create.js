@@ -6,7 +6,7 @@ export const main = handler(async (event) => {
 
     const params = {
         // TODO: Get this from process env vars
-        TableName: "Notepads",
+        TableName: process.env.TABLE_NAME,
         Item: {
             // The attributes of the item to be created.
             notepadId: event.pathParameters.id, // Id of the notepad from the path 

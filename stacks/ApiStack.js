@@ -8,6 +8,15 @@ export function ApiStack({ stack, app }) {
     // Create the api.
     const api = new Api(stack, "Api", {
         // TODO: Authentication.
+        defaults: {
+            function: {
+                // Give API permissions to access the table.
+                permissions: [table],
+                environment: {
+                    TABLE_NAME: table.tableName,
+                },
+            },
+        },
         routes: {
             // Route used to write a message to a notepad.
             "POST /notepads/{id}": "functions/create.main",
