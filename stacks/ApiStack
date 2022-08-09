@@ -1,0 +1,16 @@
+import { Api, use } from "@serverless-stack/resources";
+import { StorageStack } from "./StorageStack";
+
+export function ApiStack({ stack, app }) {
+    // Get reference to table resource.
+    const { table } = use(StorageStack);
+
+    // Create the api.
+    const api = new Api(stack, "Api", {
+        // TODO: Authentication.
+        routes: {
+            // Route used to write a message to a notepad.
+            "POST /notepads/{id}": "functions/create.main",
+        }
+    });
+}
