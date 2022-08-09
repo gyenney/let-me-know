@@ -13,4 +13,13 @@ export function ApiStack({ stack, app }) {
             "POST /notepads/{id}": "functions/create.main",
         }
     });
+
+    // Show the API endpoint in console output.
+    stack.addOutputs({
+        ApiEndpoint: api.url,
+    });
+
+    return {
+        api,
+    }
 }
