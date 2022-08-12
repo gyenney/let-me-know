@@ -15,5 +15,5 @@ export default function (app) {
     },
   });
 
-  app.stack(StorageStack).stack(ApiStack).stack(FrontendStack);
+  app.stack(StorageStack).stack(ApiStack);
 }

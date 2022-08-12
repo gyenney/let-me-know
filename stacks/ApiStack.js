@@ -22,6 +22,7 @@ export function ApiStack({ stack, app }) {
             "POST /notepads/{id}": "functions/create.main",
             // List all messages within a given notepad.
             "GET /notepads/{id}": "functions/list.main",
+            "GET /hello": "functions/hello.main"
         }
     });
 

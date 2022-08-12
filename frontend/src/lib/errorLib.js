@@ -3,7 +3,7 @@ export function onError(error) {
 
     // Handle Auth errors.
     if (!(error instanceof Error) && error.message) {
-        messsage = error.message;
+        message = error.message;
     }
 
     alert(message);
