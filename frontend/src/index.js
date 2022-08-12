@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Amplify } from 'aws-amplify';
 import config from './config';
+import "bootstrap/dist/css/bootstrap.min.css";
 
 // Configure what AWS resources we want to interact with.
 Amplify.configure({
