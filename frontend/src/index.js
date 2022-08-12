@@ -3,6 +3,30 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { Amplify } from 'aws-amplify';
+import config from './config';
+
+// Configure what AWS resources we want to interact with.
+Amplify.configure({
+  API: {
+    // TODO: Add auth.
+    // Auth: {
+    //   mandatorySignIn: true, // Want users to be signed in before they can interact with the app.
+    //   region: config.cognito.REGION,
+    //   userPoolId: config.cognito.USER_POOL_ID,
+    //   identityPoolId: config.cognito.IDENTITY_POOL_ID,
+    //   userPoolWebClientId: config.cognito.APP_CLIENT_ID
+    // },
+    endpoints: [
+      {
+        name: "let-me-know",
+        endpoint: config.apiGateway.URL,
+        region: config.apiGateway.REGION
+      },
+    ]
+  }
+});
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
