@@ -2,6 +2,9 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { API } from "aws-amplify";
+import ListGroup from "react-bootstrap/ListGroup";
+import { LinkContainer } from "react-router-bootstrap";
+
 
 export default function Messages() {
     const { id } = useParams(); // Get notepad identifier from URL path.
@@ -10,9 +13,9 @@ export default function Messages() {
     const [messages, setMessages] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
 
-
     useEffect(() => {
         function loadMessages() {
+            console.log("Loading messages");
             return API.get("let-me-know", `/notepads/${id}`);
         }
         async function onLoad() {
@@ -35,9 +38,22 @@ export default function Messages() {
     function renderMessages() {
         return (
             <div className="messages">
-                {messages.map(({ content }) => (
-                    <p>{content}</p>
+                {messages.map(({ msgTimestamp, userId, message }) => (
+                    <LinkContainer key={msgTimestamp}>
+                        <ListGroup.Item action>
+                            <span className="font-weight-bold">
+                                {message.trim().split("\n")[0]}
+                            </span>
+                            {/* <br />
+                            <span className="text-muted">
+                                Created: {new Date(createdAt).toLocaleString()}
+                            </span> */}
+                        </ListGroup.Item>
+                    </LinkContainer>
                 ))}
+                {/* {messages.map(({ content }) => (
+                    <p>{content}</p>
+                ))} */}
             </div>
         );
     }
