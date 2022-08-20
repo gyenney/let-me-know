@@ -41,7 +41,10 @@ export default function Messages() {
                 <div className="messages">
                     {messages.map(({ msgTimestamp, userId, message }) => (
                         <ListGroupItem key={msgTimestamp}>
-                            {userId}: {message}
+
+                            <span className="ml-2 font-weight-bold"> {userId}</span>
+                            <br />
+                            {message}
                             <br />
                             <span className="text-muted">
                                 {new Date(msgTimestamp).toLocaleString()}
