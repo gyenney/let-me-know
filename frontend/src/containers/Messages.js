@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { API } from "aws-amplify";
 import ListGroup from "react-bootstrap/ListGroup";
-import { LinkContainer } from "react-router-bootstrap";
+import ListGroupItem from "react-bootstrap/esm/ListGroupItem";
 
 
 export default function Messages() {
@@ -37,24 +37,16 @@ export default function Messages() {
 
     function renderMessages() {
         return (
-            <div className="messages">
-                {messages.map(({ msgTimestamp, userId, message }) => (
-                    <LinkContainer key={msgTimestamp}>
-                        <ListGroup.Item action>
-                            <span className="font-weight-bold">
-                                {message.trim().split("\n")[0]}
-                            </span>
-                            {/* <br />
-                            <span className="text-muted">
-                                Created: {new Date(createdAt).toLocaleString()}
-                            </span> */}
-                        </ListGroup.Item>
-                    </LinkContainer>
-                ))}
-                {/* {messages.map(({ content }) => (
-                    <p>{content}</p>
-                ))} */}
-            </div>
+            <ListGroup>
+                <div className="messages">
+                    {messages.map(({ msgTimestamp, userId, message }) => (
+                        <ListGroupItem key={msgTimestamp}>
+                            {userId}: {message}
+                        </ListGroupItem>
+                    ))
+                    }
+                </div >
+            </ListGroup>
         );
     }
 
