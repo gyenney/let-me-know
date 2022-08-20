@@ -42,6 +42,10 @@ export default function Messages() {
                     {messages.map(({ msgTimestamp, userId, message }) => (
                         <ListGroupItem key={msgTimestamp}>
                             {userId}: {message}
+                            <br />
+                            <span className="text-muted">
+                                {new Date(msgTimestamp).toLocaleString()}
+                            </span>
                         </ListGroupItem>
                     ))
                     }
