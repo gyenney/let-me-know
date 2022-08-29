@@ -1,6 +1,7 @@
 import { StorageStack } from "./StorageStack";
 import { FrontendStack } from "./FrontendStack";
 import { ApiStack } from "./ApiStack";
+import { AuthStack } from "./AuthStack";
 import { App } from "@serverless-stack/resources";
 import { RemovalPolicy } from "aws-cdk-lib";
 
@@ -21,5 +22,5 @@ export default function (app) {
     app.setDefaultRemovalPolicy(RemovalPolicy.DESTROY);
   }
 
-  app.stack(StorageStack).stack(ApiStack).stack(FrontendStack);
+  app.stack(StorageStack).stack(ApiStack).stack(FrontendStack).stack(AuthStack);
 }
