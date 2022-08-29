@@ -10,12 +10,12 @@ export default function Messages() {
     const { id } = useParams(); // Get notepad identifier from URL path.
 
     // State variables
-    const [messages, setMessages] = useState(null);
+    const [messages, setMessages] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         function loadMessages() {
-            console.log("Loading messages");
+            console.log("Loading messages...");
             return API.get("let-me-know", `/notepads/${id}`);
         }
         async function onLoad() {
@@ -32,6 +32,7 @@ export default function Messages() {
         }
 
         onLoad();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []); // Only run on first render.
 
 
