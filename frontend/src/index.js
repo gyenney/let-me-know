@@ -11,14 +11,13 @@ import { BrowserRouter as Router } from "react-router-dom";
 // Configure what AWS resources we want to interact with.
 Amplify.configure({
   API: {
-    // TODO: Add auth.
-    // Auth: {
-    //   mandatorySignIn: true, // Want users to be signed in before they can interact with the app.
-    //   region: config.cognito.REGION,
-    //   userPoolId: config.cognito.USER_POOL_ID,
-    //   identityPoolId: config.cognito.IDENTITY_POOL_ID,
-    //   userPoolWebClientId: config.cognito.APP_CLIENT_ID
-    // },
+    Auth: {
+      mandatorySignIn: true, // Want users to be signed in before they can interact with the app.
+      region: config.cognito.REGION,
+      userPoolId: config.cognito.USER_POOL_ID,
+      identityPoolId: config.cognito.IDENTITY_POOL_ID,
+      userPoolWebClientId: config.cognito.APP_CLIENT_ID
+    },
     endpoints: [
       {
         name: "let-me-know",
