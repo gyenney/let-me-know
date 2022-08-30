@@ -3,7 +3,7 @@ import dynamoDb from "../util/dynamodb";
 
 export const main = handler(async (event) => {
     const params = {
-        TableName: process.env.TABLE_NAME,
+        TableName: process.env.MESSAGE_TABLE_NAME,
         // List all messages from a given notepad.
         KeyConditionExpression: "notepadId = :notepadId",
         ExpressionAttributeValues: {

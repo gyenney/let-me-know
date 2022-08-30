@@ -23,10 +23,10 @@ export function ApiStack({ stack, app }) {
             "POST /notepads/{id}": {
                 // We want user to be logged in before writing any messages.
                 authorizer: "iam",
-                function: "functions/create.main",
+                function: "functions/createMessage.main",
             },
             // List all messages within a given notepad.
-            "GET /notepads/{id}": "functions/list.main",
+            "GET /notepads/{id}": "functions/listMessage.main",
             "GET /hello": "functions/hello.main"
         }
     });
