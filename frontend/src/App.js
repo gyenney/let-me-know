@@ -4,14 +4,12 @@ import Nav from "react-bootstrap/Nav";
 import { LinkContainer } from "react-router-bootstrap";
 import Routes from "./Routes";
 import "./App.css";
-import { useNavigate } from "react-router-dom";
 import { Auth } from "aws-amplify";
 import { AppContext } from "./lib/contextLib";
 import { onError } from "./lib/errorLib";
 
 function App() {
   // State variables
-  const nav = useNavigate();
   const [isAuthenticating, setIsAuthenticating] = useState(true);
   const [isAuthenticated, userHasAuthenticated] = useState(false);
 
@@ -37,7 +35,6 @@ function App() {
   async function handleLogout() {
     await Auth.signOut();
     userHasAuthenticated(false);
-    nav("/login");
   }
 
   return (
