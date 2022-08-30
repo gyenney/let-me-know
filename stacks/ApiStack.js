@@ -8,8 +8,6 @@ export function ApiStack({ stack, app }) {
     // Create the api.
     const api = new Api(stack, "Api", {
         defaults: {
-            // Need to be authorized accross all routes.
-            authorizer: "iam",
             function: {
                 // Give API permissions to access the table.
                 permissions: [table],
@@ -20,7 +18,11 @@ export function ApiStack({ stack, app }) {
         },
         routes: {
             // Route used to write a message to a notepad.
-            "POST /notepads/{id}": "functions/create.main",
+            "POST /notepads/{id}": {
+                // We want user to be logged in before writing any messages.
+                authorizer: "iam",
+                function: "functions/create.main",
+            },
             // List all messages within a given notepad.
             "GET /notepads/{id}": "functions/list.main",
             "GET /hello": "functions/hello.main"
