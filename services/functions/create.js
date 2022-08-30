@@ -5,13 +5,12 @@ export const main = handler(async (event) => {
     const data = JSON.parse(event.body);
 
     const params = {
-        // TODO: Get this from process env vars
         TableName: process.env.TABLE_NAME,
         Item: {
             // The attributes of the item to be created.
             notepadId: event.pathParameters.id, // Id of the notepad from the path 
-            msgTimestamp: Date.now(),
-            userId: 123,
+            msgTimestamp: Date.now(),           // Timestamp of when the message was written.
+            userId: event.requestContext.authorizer.iam.cognitoIdentity.identityId, // userId of the message author.
             message: data.content,
         },
     };

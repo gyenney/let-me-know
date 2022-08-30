@@ -7,8 +7,9 @@ export function ApiStack({ stack, app }) {
 
     // Create the api.
     const api = new Api(stack, "Api", {
-        // TODO: Authentication.
         defaults: {
+            // Need to be authorized accross all routes.
+            authorizer: "iam",
             function: {
                 // Give API permissions to access the table.
                 permissions: [table],

@@ -1,4 +1,3 @@
-import * as iam from "aws-cdk-lib/aws-iam";
 import { Auth, use } from "@serverless-stack/resources";
 import { ApiStack } from "./ApiStack";
 
@@ -23,7 +22,7 @@ export function AuthStack({ stack, app }) {
         Region: app.region,
         UserPoolId: auth.userPoolId,
         IdentityPoolId: auth.cognitoIdentityPoolId,
-        UserPoolClientId: auth.UserPoolClientId,
+        UserPoolClientId: auth.userPoolClientId,
     });
 
     return {

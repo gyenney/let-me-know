@@ -22,5 +22,5 @@ export default function (app) {
     app.setDefaultRemovalPolicy(RemovalPolicy.DESTROY);
   }
 
-  app.stack(StorageStack).stack(ApiStack).stack(FrontendStack).stack(AuthStack);
+  app.stack(StorageStack).stack(ApiStack).stack(AuthStack).stack(FrontendStack);
 }
