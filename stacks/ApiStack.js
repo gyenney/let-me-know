@@ -3,16 +3,18 @@ import { StorageStack } from "./StorageStack";
 
 export function ApiStack({ stack, app }) {
     // Get reference to table resource.
-    const { table } = use(StorageStack);
+    const { messageTable, notepadTable } = use(StorageStack);
 
     // Create the api.
     const api = new Api(stack, "Api", {
         defaults: {
             function: {
                 // Give API permissions to access the table.
-                permissions: [table],
+                permissions: [messageTable, notepadTable],
                 environment: {
-                    TABLE_NAME: table.tableName,
+                    MESSAGE_TABLE_NAME: messageTable.tableName,
+                    NOTEPAD_TABLE_NAME: notepadTable.tableName,
+
                 },
             },
         },
