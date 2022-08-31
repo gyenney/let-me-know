@@ -1,7 +1,6 @@
 import { Table } from "@serverless-stack/resources";
 
 export function StorageStack({ stack, app }) {
-    // TODO: Have two tables, one for storing messages and one for notepads.
     const messageTable = new Table(stack, "Messages", {
         fields: {
             notepadId: "string",
