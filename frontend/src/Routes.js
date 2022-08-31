@@ -7,6 +7,7 @@ import Messages from "./containers/Messages";
 import NotFound from "./containers/NotFound";
 import Signup from "./containers/Signup"
 import Login from "./containers/Login";
+import NewNotepad from "./containers/NewNotepad";
 
 export default function Links() {
     // Renders the first matching route that is defined.
@@ -32,6 +33,11 @@ export default function Links() {
                 // logged-in.
                 <AuthenticatedRoute>
                     <Messages />
+                </AuthenticatedRoute>
+            } />
+            <Route path="/create" element={
+                <AuthenticatedRoute>
+                    <NewNotepad />
                 </AuthenticatedRoute>
             } />
             <Route path="*" element={<NotFound />} />

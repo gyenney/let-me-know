@@ -12,6 +12,7 @@ export default function Signup() {
     // Init form hook.
     // TODO: Give option to sign up w/ phone number?
     const [fields, handleFieldChange] = useFormFields({
+        username: "",
         email: "",
         password: "",
         confirmPassword: "",
@@ -28,6 +29,7 @@ export default function Signup() {
         // Make sure fields are valid.
         return (
             fields.email.length > 0 &&
+            fields.username.length > 0 &&
             fields.password.length > 0 &&
             fields.password === fields.confirmPassword
         );
@@ -50,8 +52,12 @@ export default function Signup() {
         setIsLoading(true);
         try {
             const newUser = await Auth.signUp({
-                username: fields.email,
+                username: fields.username,
                 password: fields.password,
+                attributes: {
+                    email: fields.email,
+                    // preferred_username: fields.username,
+                }
             });
             setIsLoading(false);
             setNewUser(newUser);
@@ -66,9 +72,11 @@ export default function Signup() {
         setIsLoading(true);
         try {
             // Confirm signup aand then log in.
-            await Auth.confirmSignUp(fields.email, fields.confirmationCode);
-            await Auth.signIn(fields.email, fields.password);
+            await Auth.confirmSignUp(fields.username, fields.confirmationCode);
+            await Auth.signIn(fields.username, fields.password);
             userHasAuthenticated(true);
+            const user = await Auth.currentAuthenticatedUser();
+            console.log('attributes:', user.attributes);
 
             // Nav back to homepage.
             nav("/");
@@ -96,6 +104,15 @@ export default function Signup() {
     function renderForm() {
         return (
             <Form onSubmit={handleSubmit}>
+                <Form.Group controlId="username" size="lg">
+                    <Form.Label>Username</Form.Label>
+                    <Form.Control
+                        autoFocus
+                        type="text"
+                        value={fields.username}
+                        onChange={handleFieldChange}
+                    />
+                </Form.Group>
                 <Form.Group controlId="email" size="lg">
                     <Form.Label>Email</Form.Label>
                     <Form.Control

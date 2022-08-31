@@ -27,7 +27,12 @@ export function ApiStack({ stack, app }) {
             },
             // List all messages within a given notepad.
             "GET /notepads/{id}": "functions/listMessage.main",
-            "GET /hello": "functions/hello.main"
+            // Create a new notepad.
+            "POST /create": {
+                authorizer: "iam",
+                function: "functions/createNotepad.main",
+            },
+            "GET /hello": "functions/hello.main",
         }
     });
 

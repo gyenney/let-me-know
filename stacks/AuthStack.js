@@ -8,7 +8,7 @@ export function AuthStack({ stack, app }) {
     const auth = new Auth(stack, "Auth", {
         // TODO: We can have user's sign-up in other ways, such as with a username or phone-number.
         // NOTE: This can't be changed after first created.
-        login: ["email", "phone"]
+        login: ["username", "email"]
     });
 
     // Specify the resources our authenticated users have access to.

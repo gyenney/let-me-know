@@ -8,10 +8,9 @@ export const main = handler(async (event) => {
         TableName: process.env.MESSAGE_TABLE_NAME,
         Item: {
             // The attributes of the item to be created.
-            // TODO: Where do we get this id from? Probably parsed from the event body.
             notepadId: event.pathParameters.id, // Id of the notepad from the path 
             msgTimestamp: Date.now(),           // Timestamp of when the message was written.
-            userId: event.requestContext.authorizer.iam.cognitoIdentity.identityId, // userId of the message author.
+            userId: data.username, // username of the message author.
             message: data.content,
         },
     };

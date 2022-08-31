@@ -41,12 +41,11 @@ export default function Messages() {
             <ListGroup>
                 <div className="messages">
                     {messages.map(({ msgTimestamp, userId, message }) => (
-                        <ListGroupItem key={msgTimestamp}>
-
+                        < ListGroupItem key={msgTimestamp} >
                             <span className="ml-2 font-weight-bold"> {userId}</span>
                             <br />
                             {message}
-                            <br />
+                            < br />
                             <span className="text-muted">
                                 {new Date(msgTimestamp).toLocaleString()}
                             </span>
@@ -54,7 +53,7 @@ export default function Messages() {
                     ))
                     }
                 </div >
-            </ListGroup>
+            </ListGroup >
         );
     }
 
