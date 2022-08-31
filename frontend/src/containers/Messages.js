@@ -1,9 +1,14 @@
 // Container for rendering the messages in a notepad.
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { API } from "aws-amplify";
+import Form from "react-bootstrap/Form";
+import { API, Auth } from "aws-amplify";
 import ListGroup from "react-bootstrap/ListGroup";
 import ListGroupItem from "react-bootstrap/esm/ListGroupItem";
+import LoaderButton from "../components/LoaderButton";
+import "./Messages.css";
+import { setSourceMapRange } from "typescript";
+import { onError } from "../lib/errorLib";
 
 
 export default function Messages() {
@@ -11,16 +16,40 @@ export default function Messages() {
 
     // State variables
     const [messages, setMessages] = useState([]);
+    const [notepad, setNotepad] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
+    const [newMessage, setNewMessage] = useState("");
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
         function loadMessages() {
             console.log("Loading messages...");
             return API.get("let-me-know", `/notepads/${id}`);
         }
+
+        function loadNotepad() {
+            console.log("Loading notepad...");
+            return API.get("let-me-know", `/notepad/${id}`);
+        }
+
+        function loadUser() {
+            console.log("Loading user...");
+            return Auth.currentUserInfo();
+        }
+
+
         async function onLoad() {
             try {
-                console.log("page loaded!");
+                // Get user's info
+                const user = await loadUser();
+                setUser(user);
+
+                // GET the notepad item from our API using it's ID.
+                const notepadId = `${id}`;
+                const notepad = await loadNotepad({ notepadId });
+                setNotepad(notepad);
+
+                // GET the messages contained in the notepad from our API.
                 const messages = await loadMessages();
                 setMessages(messages);
             } catch (e) {
@@ -57,10 +86,63 @@ export default function Messages() {
         );
     }
 
+    function sendMessage(id, message) {
+        return API.post("let-me-know", `/notepads/${id}`, { body: message });
+    }
+
+    async function handleChatSubmit(event) {
+        event.preventDefault();
+
+        try {
+            if (validateChatForm()) {
+
+                // Send message to notepad.
+                await sendMessage(notepad.notepadId, { username: user.username, content: newMessage });
+
+                // Clear the input values in the form.
+                setNewMessage("");
+            }
+        } catch (e) {
+            onError(e);
+        }
+    }
+
+    function validateChatForm() {
+        return newMessage.length > 0;
+    }
+
+    function renderChatForm() {
+        return (
+            <div id="footer">
+                <Form onSubmit={handleChatSubmit}>
+                    <Form.Group controlId="newMessage" size="lg">
+                        <Form.Control
+                            autoFocus
+                            type="text"
+                            value={newMessage}
+                            onChange={(e) => setNewMessage(e.target.value)}
+                        />
+                    </Form.Group>
+                    {/* <LoaderButton
+                        block="true"
+                        size="lg"
+                        type="submit"
+                        variant="success"
+                        isLoading={isLoading}
+                        disabled={!validateChatForm()}
+                    >
+                        Submit
+                    </LoaderButton> */}
+                </Form>
+            </div >
+        );
+    }
+
     return (
         <div className="Messages">
-            <h1>{id}</h1>
+            {!isLoading && <h1>{notepad.mainIdentifier}</h1>}
             {!isLoading && renderMessages()}
+            {renderChatForm()}
         </div>
     )
 }

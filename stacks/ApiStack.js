@@ -32,6 +32,11 @@ export function ApiStack({ stack, app }) {
                 authorizer: "iam",
                 function: "functions/createNotepad.main",
             },
+            // Get a notepad by it's id.
+            // TODO: I don't think you can pass a "body" in a GET route, so the parameter
+            // needs to be in the path. 
+            // TODO: How do we prevent anyone from invoking this route from the browser?
+            "GET /notepad/{id}": "functions/getNotepad.main",
             "GET /hello": "functions/hello.main",
         }
     });

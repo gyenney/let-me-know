@@ -1,7 +1,6 @@
 // Top level component for the homepage. Responds to the '/' route.
 import React from "react";
 import "./Home.css";
-import { Auth } from "aws-amplify";
 
 // TODO: Have a search feature or "New Notepad" feature to the home page.
 
