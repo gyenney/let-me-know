@@ -10,6 +10,11 @@ export default function Home() {
             <div className="lander">
                 <h1>Let Me Know</h1>
             </div>
+            Stuff to be added to this page:
+            <ol>
+                <li>A search bar to look up notepads.</li>
+                <li> A "create notepad" button (probably located in top right or something) to create a new notepad. </li>
+            </ol>
         </div>
     )
 }
