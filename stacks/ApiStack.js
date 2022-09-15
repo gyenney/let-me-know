@@ -37,6 +37,8 @@ export function ApiStack({ stack, app }) {
             // needs to be in the path. 
             // TODO: How do we prevent anyone from invoking this route from the browser?
             "GET /notepad/{id}": "functions/getNotepad.main",
+            // Query notepads.
+            "GET /notepad/search/{id}": "functions/searchNotepad.main",
             "GET /hello": "functions/hello.main",
         }
     });
