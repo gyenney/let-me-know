@@ -25,6 +25,13 @@ export function StorageStack({ stack, app }) {
             // TODO: Connection engine can utilize other identifiers to make queries.
         }
     });
+    const connectionsTable = new Table(stack, "Connections", {
+        fields: {
+            notepadId: "string",
+            clientId: "string",
+        },
+        primaryIndex: { partitionKey: "notepadId", sortKey: "clientId" },
+    });
 
-    return { messageTable, notepadTable };
+    return { messageTable, notepadTable, connectionsTable };
 }
