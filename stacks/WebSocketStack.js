@@ -14,9 +14,9 @@ export function WebSocketStack({ stack, app }) {
             },
         },
         routes: {
-            $connect: "functions/connect.handler",
-            $disconnect: "functions/disconnect.handler",
-            sendmessage: "functions/sendMessage.handler",
+            $connect: "functions/connect.main",
+            $disconnect: "functions/disconnect.main",
+            sendmessage: "functions/sendMessage.main",
         },
     });
 
