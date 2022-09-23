@@ -15,7 +15,7 @@ export function WebSocketStack({ stack, app }) {
         },
         routes: {
             $connect: "functions/chatHandler.main",
-            $disconnect: "functions/chatHandlermain",
+            $disconnect: "functions/chatHandler.main",
             sendmessage: "functions/chatHandler.main",
         },
     });
