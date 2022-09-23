@@ -1,5 +1,5 @@
 // Container for rendering the messages in a notepad.
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import { API, Auth } from "aws-amplify";
@@ -8,12 +8,17 @@ import ListGroupItem from "react-bootstrap/esm/ListGroupItem";
 import LoaderButton from "../components/LoaderButton";
 import "./Messages.css";
 import { onError } from "../lib/errorLib";
+import config from "../config";
 
 
 export default function Messages() {
     const { id } = useParams(); // Get notepad identifier from URL path.
+    const WS_URL = process.env.REACT_APP_WEBSOCKET_URL;
 
     // State variables
+    const socket = useRef(null);
+    const [isConnected, setIsConnected] = useState(false);
+    const [connections, setConnections] = useState([]);
     const [messages, setMessages] = useState([]);
     const [notepad, setNotepad] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -36,6 +41,15 @@ export default function Messages() {
             return Auth.currentUserInfo();
         }
 
+        function onConnect() {
+            // Check if socket is already connected.
+            if (socket.current?.readyState !== WebSocket.OPEN) {
+                console.log("WebSocket URL:", WS_URL);
+                socket.current = new WebSocket(WS_URL);
+            }
+
+            console.log("Connected to WebSocket.");
+        }
 
         async function onLoad() {
             try {
@@ -51,6 +65,10 @@ export default function Messages() {
                 // GET the messages contained in the notepad from our API.
                 const messages = await loadMessages();
                 setMessages(messages);
+
+                // Connect to WebSocket.
+                onConnect();
+
             } catch (e) {
                 alert(e.toString())
                 // onError(e);

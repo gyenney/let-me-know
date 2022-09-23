@@ -3,6 +3,7 @@ const config = {
     apiGateway: {
         REGION: process.env.REACT_APP_REGION,
         URL: process.env.REACT_APP_API_URL,
+        WEBSOCKET_URL: process.env.WEBSOCKET_URL,
     },
     cognito: {
         REGION: process.env.REACT_APP_REGION,

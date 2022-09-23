@@ -5,7 +5,7 @@ export function WebSocketStack({ stack, app }) {
     const { connectionsTable } = use(StorageStack);
 
     // Create the WebSocket API
-    const webSocketApi = new WebSocketApi(stack, "Api", {
+    const ws = new WebSocketApi(stack, "Api", {
         defaults: {
             function: {
                 environment: {
@@ -14,19 +14,19 @@ export function WebSocketStack({ stack, app }) {
             },
         },
         routes: {
-            $connect: "functions/connect.main",
-            $disconnect: "functions/disconnect.main",
-            sendmessage: "functions/sendMessage.main",
+            $connect: "functions/chatHandler.main",
+            $disconnect: "functions/chatHandlermain",
+            sendmessage: "functions/chatHandler.main",
         },
     });
 
     // Allow the API to access the table
-    webSocketApi.attachPermissions([connectionsTable]);
+    ws.attachPermissions([connectionsTable]);
 
     // Show the API endpoint in the output
     stack.addOutputs({
-        WebSocketApiEndpoint: webSocketApi.url,
+        WebSocketApiEndpoint: ws.url,
     });
 
-    return { webSocketApi };
+    return { ws }
 }
