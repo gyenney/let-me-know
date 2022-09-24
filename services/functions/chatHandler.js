@@ -11,38 +11,43 @@ const NotepadId = "New notepad";
 
 export const main = handler(async (event) => {
     if (event.requestContext) {
-        let body = {};
+        let messageData = "";
         try {
+            console.log(event.body);
             if (event.body) {
-                body = JSON.parse(event.body);
+                const body = JSON.parse(event.body);
+                messageData = body.content;
             }
+            console.log("messageData:", messageData);
         } catch (e) {
-            //
+            console.log("chatHandler: Error parsing msg body.");
         }
 
         const connectionId = event.requestContext.connectionId;
         const routeKey = event.requestContext.routeKey;
+        console.log("Route key:", routeKey);
         const { stage, domainName } = event.requestContext;
         const apiG = new ApiGatewayManagementApi({
             endpoint: `${domainName}/${stage}`,
         });
 
-        // Send a message to a given WebSocket connection.
-        const sendToOne = async (id, body) => {
+        const postToConnection = async ({ clientId }) => {
             try {
-                await apiG.postToConnection({
-                    'ConnectionId': id,
-                    'Data': Buffer.from(JSON.stringify(body))
-                }).promise();
+                // Send the message to the given client.
+                console.log(`Sending message to ${clientId}`)
+                await apiG.postToConnection({ ConnectionId: clientId, Data: messageData }).promise();
             } catch (e) {
-                console.log(e);
+                if (e.statusCode == 410) {
+                    // Remove stale connections
+                    await dynamodb.delete({
+                        TableName,
+                        Key: {
+                            notepadId: NotepadId,
+                            clientId: connectionId,
+                        },
+                    });
+                }
             }
-        };
-
-        // Send a message to an array of WebSocket connections.
-        const sendToAll = async (ids, body) => {
-            const all = ids.map(i => sendToOne(i, body));
-            return Promise.all(all);
         };
 
         // Add a connection in a notepad to the 'connections' db.
@@ -82,12 +87,19 @@ export const main = handler(async (event) => {
             case '$disconnect':
                 return disconnect(NotepadId, connectionId);
                 break;
-            case 'sendMessage':
-                // Send message to all connected users.
+            case 'sendmessage':
+                if (event.body) {
+                    console.log("sending message...");
+                    // Scan DB for all connections.
+                    const connections = await dynamodb.scan({ TableName, ProjectionExpression: "clientId" });
+                    console.log("connections", connections);
 
-                // Scan DB for all connections.
-                const connections = await dynamodb.scan({ TableName, ProjectionExpression: "clientId" });
+                    // Send message to all connected users.
+                    await Promise.all(connections.Items.map(postToConnection));
+                    return { statusCode: 200, body: "Message sent." };
+                }
 
+                return { statusCode: 400, body: "No message present in body" };
 
                 break;
         }
