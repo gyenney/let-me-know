@@ -44,7 +44,7 @@ export const main = handler(async (event) => {
                         TableName,
                         Key: {
                             notepadId: NotepadId,
-                            clientId: connectionId,
+                            clientId: clientId,
                         },
                     });
                 }
