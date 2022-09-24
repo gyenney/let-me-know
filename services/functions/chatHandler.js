@@ -8,12 +8,11 @@ const TableName = process.env.CONNECTIONS_TABLE_NAME;
 //       $connect route so that we can specify which notepad a given connection is in.
 const NotepadId = "New notepad";
 
-
 export const main = handler(async (event) => {
     if (event.requestContext) {
+        // Get message content from event body.
         let messageData = "";
         try {
-            console.log(event.body);
             if (event.body) {
                 const body = JSON.parse(event.body);
                 messageData = body.content;
@@ -23,6 +22,7 @@ export const main = handler(async (event) => {
             console.log("chatHandler: Error parsing msg body.");
         }
 
+        // Get the id and route key of client of the client.
         const connectionId = event.requestContext.connectionId;
         const routeKey = event.requestContext.routeKey;
         console.log("Route key:", routeKey);
@@ -31,6 +31,7 @@ export const main = handler(async (event) => {
             endpoint: `${domainName}/${stage}`,
         });
 
+        // Sends a message to a given client.
         const postToConnection = async ({ clientId }) => {
             try {
                 // Send the message to the given client.
@@ -82,6 +83,7 @@ export const main = handler(async (event) => {
 
         switch (routeKey) {
             case '$connect':
+                // Add the current client to the 'connections' table.
                 return connect(NotepadId, connectionId);
                 break;
             case '$disconnect':
@@ -92,7 +94,7 @@ export const main = handler(async (event) => {
                     console.log("sending message...");
                     // Scan DB for all connections.
                     const connections = await dynamodb.scan({ TableName, ProjectionExpression: "clientId" });
-                    console.log("connections", connections);
+                    console.log("connections:", connections);
 
                     // Send message to all connected users.
                     await Promise.all(connections.Items.map(postToConnection));
